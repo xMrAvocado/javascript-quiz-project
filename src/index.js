@@ -156,18 +156,22 @@ document.addEventListener("DOMContentLoaded", () => {
       //  When a radio input gets selected the `.checked` property will be set to true.
       //  You can use check which choice was selected by checking if the `.checked` property is true.
 
-      selectedAnswer = allChoices.filter((eachChoice)=>{
+      /*selectedAnswer = allChoices.filter((eachChoice)=>{
         if(eachChoice === true){
-          quiz.checkAnswer();
+          return true
         }else{
           return false;
         }
       });
-      /*allChoices.forEach((eachChoice)=>{
+      quiz.checkAnswer(selectedAnswer[0].value);
+      quiz.moveToNextQuestion();
+      showQuestion();*/
+      allChoices.forEach((eachChoice)=>{
         if(eachChoice.checked === true){
-          quiz.checkAnswer();
+          selectedAnswer = eachChoice.value;
         }
-      });*/
+      });
+      quiz.checkAnswer(selectedAnswer);
       quiz.moveToNextQuestion();
       showQuestion();
       

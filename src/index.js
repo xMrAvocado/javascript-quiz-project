@@ -26,13 +26,19 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Array with the quiz questions
   const questions = [
-    new Question("What is 2 + 2?", ["3", "4", "5", "6"], "4", 1),
-    new Question("What is the capital of France?", ["Miami", "Paris", "Oslo", "Rome"], "Paris", 1),
-    new Question("Who created JavaScript?", ["Plato", "Brendan Eich", "Lea Verou", "Bill Gates"], "Brendan Eich", 2),
-    new Question("What is the mass–energy equivalence equation?", ["E = mc^2", "E = m*c^2", "E = m*c^3", "E = m*c"], "E = mc^2", 3),
+    new Question("Cuantos peluches tiene Alejandro en su coche?", ["1", "10", "20", "Tantos como amigas lleve en el coche."], "Tantos como amigas lleve en el coche.", 1),
+    new Question("Cuándo es el cumpleaños de Jorge?", ["5 de Octubre", "31 de Febrero", "25 de Diciembre", "Ayer"], "5 de Octubre", 1),
+    new Question("Dónde vive la novia de Juan?", ["Es imaginación suya.", "Es el poro.", "Mexico", "En mi casa."], "Mexico", 2),
+    new Question("Cuántas horas duerme Kurt al día?", ["3", "4", "5", "8"], "5", 3),
+    new Question("Actividad favorita de Alejandro?", ["No tiene.", "Gimnasio", "No puede, es negro.", "Recoger algodón."], "Recoger algodón.", 3),
+    new Question("Del 1 al 4, cuan parecido es Samuel al Xokas?", ["1", "2", "3", "4"], "4", 3),
+    new Question("Cuál es la comida favorita de Jorge?", ["No.", "patata", "Mal.", "Peor."], "patata", 3),
+    new Question("Cuántas cosas ha visto el poro de Juan?", ["Muchas.", "Pocas.", "Está traumado el pobre.", "Quien es Juan?"], "Quien es Juan?", 3),
+    new Question("Por qué pone Kurt el desenfoque en la cámara?", ["No es desenfoque, son las neuronas trabajando.", "Los porritos.", "Porque está desnudo.", "Porque sale más guapo."], "No es desenfoque, son las neuronas trabajando.", 3),
+    new Question("Quién es la novia de Samuel?", ["La perra.", "Qué es una novia?", "La dejó por Ibai.", "Sólo tiene ojos para papi Henry Cavill."], "Sólo tiene ojos para papi Henry Cavill.", 3),
     // Add more questions here
   ];
-  const quizDuration = 120; // 120 seconds (2 minutes)
+  const quizDuration = 300; // 120 seconds (2 minutes)
 
 
   /************  QUIZ INSTANCE  ************/
@@ -44,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /************  SHOW INITIAL CONTENT  ************/
-
+function actualizarTimer(){
   // Convert the time remaining in seconds to minutes and seconds, and pad the numbers with zeros if needed
   const minutes = Math.floor(quiz.timeRemaining / 60).toString().padStart(2, "0");
   const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
@@ -52,6 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Display the time remaining in the time remaining container
   const timeRemainingContainer = document.getElementById("timeRemaining");
   timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+}
+
 
   // Show first question
   showQuestion();
@@ -60,7 +68,20 @@ document.addEventListener("DOMContentLoaded", () => {
   /************  TIMER  ************/
 
   let timer;
+  actualizarTimer();
+  iniciarTemporizador();
 
+  function iniciarTemporizador(){
+    timer = setInterval(()=>{
+      quiz.timeRemaining -= 1;
+      actualizarTimer();
+      if(quiz.timeRemaining === 0){
+        showResults();
+      }
+      console.log(quiz.timeRemaining);
+    }, 1000);
+  }
+  
 
   /************  EVENT LISTENERS  ************/
 
@@ -196,6 +217,10 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // 3. Update the result container (div#result) inner text to show the number of correct answers out of total questions
     resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${questions.length} correct answers!`; // This value is hardcoded as a placeholder
+  
+    /*DAY 4*/ 
+    clearInterval(timer);
+
   }
   
   /*5*/ 
@@ -208,5 +233,10 @@ document.addEventListener("DOMContentLoaded", () => {
     quiz.correctAnswers = 0;
     quiz.shuffleQuestions();
     showQuestion();
+
+    /*DAY 4*/ 
+    quiz.timeRemaining = quizDuration;
+    actualizarTimer();
+    iniciarTemporizador();
   });
 });
